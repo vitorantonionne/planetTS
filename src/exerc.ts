@@ -57,95 +57,147 @@ function promptValidSituation() {
   let validSituation = false;
 
   if (!validSituation) {
-    const situationInput = prompt(`Informe a situação do planeta:\n1 - Habitado\n2 - Habitável\n3 - Inabitável\n4 - Inexplorado`)
+    const situationInput = prompt(
+      `Informe a situação do planeta:\n1 - Habitado\n2 - Habitável\n3 - Inabitável\n4 - Inexplorado`
+    );
 
     switch (situationInput) {
       case "1":
-        situation = "Habitado"
-        validSituation = true
+        situation = "Habitado";
+        validSituation = true;
         break;
       case "2":
-        situation = "Habitável"
-        validSituation = true
-        break
+        situation = "Habitável";
+        validSituation = true;
+        break;
       case "3":
-        situation = "Inabitável"
-        validSituation = true
-        break
+        situation = "Inabitável";
+        validSituation = true;
+        break;
       case "4":
-        situation = "Inexplorado"
-        validSituation = true
-        break
-    
+        situation = "Inexplorado";
+        validSituation = true;
+        break;
+
       default:
-        alert("Opção inválida!")
+        alert("Opção inválida!");
         break;
     }
   }
-  return situation
+  return situation;
 }
 
 function promptValidPlanet(callbackfn: (planet: planet) => void) {
-  const planetName = prompt(`Infomr o nome do planeta ?`)
-  const planet = findPlanet(planetName)
+  const planetName = prompt(`Infomr o nome do planeta ?`);
+  const planet = findPlanet(planetName);
 
   if (planet) {
-    callbackfn(planet)
+    callbackfn(planet);
   } else {
-    alert("planeta não encontrado! Retornando ao menu ....")
+    alert("planeta não encontrado! Retornando ao menu ....");
   }
 }
 
 function firstMenuOption() {
-  const name = prompt("Informe o nome do planeta:")
-  const coordinateA = Number(prompt('Informe a primeira coordenada:'))
-  const coordinateB = Number(prompt('Informe a segunda coordenada:'))
-  const coordinateC = Number(prompt('Informe a terceira coordenada:'))
-  const coordinateD = Number(prompt('Informe a quarta coordenada:'))
+  const name = prompt("Informe o nome do planeta:");
+  const coordinateA = Number(prompt("Informe a primeira coordenada:"));
+  const coordinateB = Number(prompt("Informe a segunda coordenada:"));
+  const coordinateC = Number(prompt("Informe a terceira coordenada:"));
+  const coordinateD = Number(prompt("Informe a quarta coordenada:"));
 
-  const situation = promptValidSituation()
+  const situation = promptValidSituation();
 
   const confirmation = confirm(`Confirme o registro do planeta ${name}?
   Coordenadas: (${coordinateA}, ${coordinateB}, ${coordinateC}, ${coordinateD})
-  Situação: ${situation}`)
+  Situação: ${situation}`);
 
   if (confirmation) {
-    savePlanet(name,[coordinateA, coordinateB, coordinateC, coordinateD], situation)
+    savePlanet(
+      name,
+      [coordinateA, coordinateB, coordinateC, coordinateD],
+      situation
+    );
   }
 }
 
 function secondMenuOption() {
-  promptValidPlanet(planet => {
-    const situation = promptValidSituation()
-    toUpdateSituation(situation, planet)
-  })
+  promptValidPlanet((planet) => {
+    const situation = promptValidSituation();
+    toUpdateSituation(situation, planet);
+  });
 }
 
 function thirdMenuOption() {
-  promptValidPlanet(planet => {
-    const satellite = prompt('Informe o nome do satelite a ser adicionado:')
-    addSatellitePlanet(satellite, planet)
-  })
+  promptValidPlanet((planet) => {
+    const satellite = prompt("Informe o nome do satelite a ser adicionado:");
+    addSatellitePlanet(satellite, planet);
+  });
 }
 
 function fourMenuOption() {
-  promptValidPlanet(planet => {
-    const sattelite = prompt('Informe o satelite a ser removido:')
-    removeSatellitePlanet(sattelite, planet)
-  })
+  promptValidPlanet((planet) => {
+    const sattelite = prompt("Informe o satelite a ser removido:");
+    removeSatellitePlanet(sattelite, planet);
+  });
 }
 
 function fifthMenuOption() {
-  let list = 'Planetas\n'
+  let list = "Planetas\n";
 
-  listPlanets.forEach(planet => {
-    const [a , b , c , d] = planet.cordenates
+  listPlanets.forEach((planet) => {
+    const [a, b, c, d] = planet.cordenates;
 
-    list +=`
+    list += `
       Nome: ${planet.name}
       Coordenadas: ${a}, ${b}, ${c}, ${d}
       Situação: ${planet.situation}
       Satélites: ${planet.satellite}
     `
+
+    planet.satellite.forEach(satellite => {
+      list += `           - ${satellite}\n`
+    })
   })
+
+  alert(list)
+}
+
+
+let userOption = 0 
+
+while (userOption !== 6) {
+  const menu = `
+    1 - Registrar um novo planeta
+    2 - Atualizar situação do planeta
+    3 - Adicionar um satélite do planeta
+    4 - Remover um satélite do planeta
+    5 - Lista todos os planetas
+    6 - Sair
+  `
+
+  userOption = Number.parseInt(prompt(menu))
+
+  switch(userOption) {
+    case 1:
+      firstMenuOption()
+      break
+    case 2:
+      secondMenuOption()
+      break
+    case 3:
+      thirdMenuOption()
+      break
+    case 4:
+      fourMenuOption()
+      break
+    case 5:
+      fifthMenuOption()
+      break
+    case 6:
+      alert('Encerrando o sistema...')
+      break
+    default:
+      alert('Opção invalida , retornando ao sistema...')
+      break
+  }
 }
