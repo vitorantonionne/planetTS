@@ -82,7 +82,6 @@ function promptValidSituation() {
         break;
     }
   }
-
   return situation
 }
 
@@ -118,5 +117,35 @@ function firstMenuOption() {
 function secondMenuOption() {
   promptValidPlanet(planet => {
     const situation = promptValidSituation()
+    toUpdateSituation(situation, planet)
+  })
+}
+
+function thirdMenuOption() {
+  promptValidPlanet(planet => {
+    const satellite = prompt('Informe o nome do satelite a ser adicionado:')
+    addSatellitePlanet(satellite, planet)
+  })
+}
+
+function fourMenuOption() {
+  promptValidPlanet(planet => {
+    const sattelite = prompt('Informe o satelite a ser removido:')
+    removeSatellitePlanet(sattelite, planet)
+  })
+}
+
+function fifthMenuOption() {
+  let list = 'Planetas\n'
+
+  listPlanets.forEach(planet => {
+    const [a , b , c , d] = planet.cordenates
+
+    list +=`
+      Nome: ${planet.name}
+      Coordenadas: ${a}, ${b}, ${c}, ${d}
+      Situação: ${planet.situation}
+      Satélites: ${planet.satellite}
+    `
   })
 }
